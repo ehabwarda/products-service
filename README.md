@@ -35,6 +35,8 @@ You need to provide username and password, as configured (username: user
 1- Using CURL
 - curl -u user:password -X GET -i "http://localhost:8080/api/products"
 - curl -u user:password -X GET -i "http://localhost:8080/api/products/1"
+- curl -u user:password -X PUT "http://localhost:8080/api/products/1" -H "Content-Type: application/json" -d "{ \"id\": 1, \"name\": \"test\", \"currentPrice\": 74.99, \"lastUpdate\": null, \"description\": \"new description\"}"
+- curl -u user:password -X POST "http://localhost:8080/api/products" -H "Content-Type: application/json" -d "{ \"currentPrice\": 9, \"description\": \"product description\", \"name\": \"product-name\"}"
 
 2- Using swagger
 - http://localhost:8080/swagger-ui.html

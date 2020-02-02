@@ -2,6 +2,8 @@ package com.demo.products.api;
 
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -21,19 +23,22 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 public class ProductControllerTest {
 
+    public static final String USERNAME = "user";
+    public static final String PASSWORD = "password";
+
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     public void whenGetProductsThenSuccess() throws Exception {
-        mockMvc.perform(get("/api/products"))
+        mockMvc.perform(get("/api/products").with(user(USERNAME).password(PASSWORD)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(4))));
     }
 
     @Test
     public void whenGetProductByIdThenSuccess() throws Exception {
-        mockMvc.perform(get("/api/products/1"))
+        mockMvc.perform(get("/api/products/1").with(user(USERNAME).password(PASSWORD)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.name").value("HTC 10 EVO"));
@@ -41,13 +46,15 @@ public class ProductControllerTest {
 
     @Test
     public void whenGetProductByNotExistIdThenNotFound() throws Exception {
-        this.mockMvc.perform(get("/api/products/999"))
+        mockMvc.perform(get("/api/products/999").with(user(USERNAME).password(PASSWORD)))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void whenCreateProductThenReturnCreatedProduct() throws Exception {
         mockMvc.perform(post("/api/products")
+                .with(user(USERNAME).password(PASSWORD))
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"name\": \"dummy-product\", \"currentPrice\": 10}"))
                 .andExpect(jsonPath("$.name").value("dummy-product"))

@@ -33,6 +33,9 @@ public class Product {
     @LastModifiedDate
     private OffsetDateTime lastUpdate;
 
+    @Column(name = "DESCRIPTION")
+    private String description;
+
     @PreUpdate
     void onPersist() {
         setLastUpdate(OffsetDateTime.now());

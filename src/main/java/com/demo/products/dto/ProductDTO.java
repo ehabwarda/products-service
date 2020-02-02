@@ -2,9 +2,9 @@ package com.demo.products.dto;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import lombok.Value;
+import lombok.Data;
 
-@Value
+@Data
 public class ProductDTO {
 
     private long id;
@@ -14,5 +14,7 @@ public class ProductDTO {
     private BigDecimal currentPrice;
 
     private OffsetDateTime lastUpdate;
+
+    private String description;
 
 }

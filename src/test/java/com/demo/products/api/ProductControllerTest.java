@@ -40,6 +40,12 @@ public class ProductControllerTest {
     }
 
     @Test
+    public void whenGetProductByNotExistIdThenNotFound() throws Exception {
+        this.mockMvc.perform(get("/api/products/999"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     public void whenCreateProductThenReturnCreatedProduct() throws Exception {
         mockMvc.perform(post("/api/products")
                 .contentType(MediaType.APPLICATION_JSON)
